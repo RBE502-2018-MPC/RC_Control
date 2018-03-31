@@ -4,6 +4,10 @@ import math
 class Path:
     def __init__(self, path, x_start, y_start):
         self.base_path = path
+        self.angles = []
+        self.path = []
+        self.error = 0
+        self.error_index = 0
         self.reset(x_start, y_start)
 
     def find_path_tangent_angles(self):
@@ -19,11 +23,14 @@ class Path:
 
     def find_error(self, actual):
         # Reset error calculation parameters
-        error = 1 # Assumes a large intial error, I need to adjust this to correct for large intial errors
-        error_index = self.error_index + 1
-        end_index = error_index + 100 # Using a resolution of 0.0001 m this will search ahead 0.01 m, lower this to reduce computation
+        error_index = self.error_index + 1  # chooses the next path position so we don't get stuck on one
+        end_index = error_index + 100  # Using a resolution of 0.0001 m per step, lower this to reduce computation
+
         if end_index > len(self.path[0][:])-1:
             end_index = len(self.path[0][:])-1
+        angle = self.angles[len(self.angles) - 1]
+        expected_end = [self.path[0][error_index], self.path[1][error_index]]
+        error = self.cross_track_error(expected_end, actual, angle)  # Sets an initial value
         for i in range(error_index, end_index):
             expected_end = [self.path[0][error_index], self.path[1][error_index]]
             if error_index > len(self.angles)-1:
@@ -35,7 +42,6 @@ class Path:
                 error_index = i
                 error = temp_error
         # If error is reduced it will advance your reference position to the smallest error found
-        # If no smaller error is found it will advance to the next index, to prevent being stuck on any point.
         self.error_index = error_index
         self.error = error
         return self.error, self.error_index

@@ -7,17 +7,17 @@ def main():
     # Straight Path Test, set up your path
     x_start = 0
     y_start = 0
-    straight_path_file = 'Path SRC\straight_path.csv'
+    straight_path_file = 'path_SRC\straight_path.csv'
     straight_line = load_file(straight_path_file)
     straight_path = Path(straight_line, x_start, y_start)
 
     # Test against simulated movement
     print('----------- Actual vs. Expected Straight Line-------------------')
-    actual_line_file = 'Path SRC\straight_error_path.csv'
+    actual_line_file = 'path_SRC\straight_error_path.csv'
     actual_line = load_file(actual_line_file)
 
     line_error = []
-    line_index =[]
+    line_index = []
 
     for i in range(0, len(actual_line[0][:]) - 1):
         actual = [actual_line[0][i], actual_line[1][i]]
@@ -28,7 +28,7 @@ def main():
         # print("Index: ", index)
 
     # Curve Path Test, set up your path
-    circle_path_file = 'Path SRC\circle_path.csv'
+    circle_path_file = 'path_SRC\circle_path.csv'
     circle = load_file(circle_path_file)
     circle_path = Path(circle, x_start, y_start)
 
@@ -37,7 +37,7 @@ def main():
 
     # arbitrary test points
     print('----------- Actual vs. Expected Circle Path-------------------')
-    actual_circle_file = 'Path SRC\circle_error_path.csv'
+    actual_circle_file = 'path_SRC\circle_error_path.csv'
     actual_circle = load_file(actual_circle_file)
     for i in range(0, len(actual_circle[0][:]) - 1):
         actual = [actual_circle[0][i], actual_circle[1][i]]
