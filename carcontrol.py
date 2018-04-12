@@ -34,12 +34,16 @@ class CarControl:
     def callback(self,data):
         self.pos = data.pose.position
         self.coordinates = np.append(self.coordinates, np.matrix([self.pos.x, self.pos.y, self.pos.z]), axis=0)
-        np.savetxt("src/py_test/data.csv", self.coordinates, delimiter=",")
+        np.savetxt("data.csv", self.coordinates, delimiter=",")
 
     def move(self):
-        Z.steer_angle = 0
-        Z.power = 0.5
-        self.car_pub.publish(Z)
+        while True:
+            try:
+                Z.steer_angle = 0
+                Z.power = 0.5
+                self.car_pub.publish(Z)
+            except KeyboardInterrupt:
+                break
 
 def main(args):
     rospy.init_node('CarControl', anonymous=True, disable_signals=True)
